@@ -7637,6 +7637,11 @@ tunnel-agent@^0.6.0:
   dependencies:
     safe-buffer "^5.0.1"
 
+tweeno@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/tweeno/-/tweeno-1.1.3.tgz#4cc0417056b36ff89874465254ee98e365dbfa71"
+  integrity sha1-TMBBcFazb/iYdEZSVO6Y42Xb+nE=
+
 tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-0.14.5.tgz#5ae68177f192d4456269d108afa93ff8743f4f64"

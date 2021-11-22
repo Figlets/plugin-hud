@@ -1,7 +1,5 @@
 
-const white: Paint[] = [{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":1,"g":1,"b":1}}]
-
-const blue: Paint[] = [{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":0.09439179301261902,"g":0.625758171081543,"b":0.9825327396392822}}]
+import {blue, padding, white	} from	'./styles'
 
 const interRegular: FontName = {
 			family: "Inter",
@@ -47,8 +45,10 @@ export class Button{
         
 
         figma.on('selectionchange', () => {
+			const lastSelection = figma.currentPage.selection
             if(figma.currentPage.selection.length == 1 && figma.currentPage.selection[0] == this.button || figma.currentPage.selection[0] == this.container){
-                figma.currentPage.selection = this.sel ? [...this.sel] : []
+
+                figma.currentPage.selection = lastSelection ? [...lastSelection] : []
                 this.redraw()
                 this.action()
             } else {
@@ -73,15 +73,13 @@ export class Button{
 
 
 		this.button = figma.createFrame()
+		
 		this.button.name = "Button"
 		this.button.fills = blue
 		this.button.primaryAxisSizingMode = "AUTO"
 		this.button.counterAxisSizingMode = "AUTO"
 		this.button.cornerRadius = 6
-		this.button.paddingLeft = 12
-		this.button.paddingRight = 12
-		this.button.paddingTop = 8
-		this.button.paddingBottom = 8
+		padding(this.button,[8,12,8,12])
 		this.button.counterAxisAlignItems = "CENTER"
 		this.button.layoutMode = "HORIZONTAL"
 		this.button.counterAxisSizingMode = "AUTO"
@@ -102,7 +100,8 @@ export class Button{
 		this.container.appendChild(this.button)
 		this.container.fills = []
 		this.container.resize(this.button.width,this.button.height)
-
+		this.container.expanded = false
+		this.container.rescale(1/figma.viewport.zoom)
         return {button: this.button, container: this.container, labelNode: this.labelNode}
 	}
 
@@ -111,8 +110,16 @@ export class Button{
 	}
 
 	redraw(){
+		console.log('redrawing', this)
+		let x = this.container.x
+		let y = this.container.y
+		let parent = this.container.parent
+		let index = parent?.children?.indexOf(this.container)
 		this.remove()
 		this.render()
+		index !== undefined && index > -1 ? parent?.insertChild(index, this.container) : parent?.appendChild(this.container);
+		this.container.x = x
+		this.container.y = y
 	}
 	addCount(){
 		this.label = 'Count: ' + (++this.state).toString()
