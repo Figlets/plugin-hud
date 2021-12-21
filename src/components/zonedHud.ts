@@ -1,7 +1,7 @@
 import { Tween, Queue, Easing } from 'tweeno';
-import { padding, styleHudZone } from './styles';
+import { padding, styleHudZone } from '../styles/style';
 
-export interface Hud extends FrameNode {
+export interface zonedHud extends FrameNode {
   container: FrameNode;
   animationloop: any;
   animationSettings: any;
@@ -24,7 +24,7 @@ export interface Hud extends FrameNode {
   bottomRight: FrameNode;
 }
 
-export class Hud {
+export class zonedHud {
   container: FrameNode;
   animationSettings: any;
   constructor() {
