@@ -7,8 +7,6 @@
 		"rootDir": "./src",
 		"outDir": "./dist",
 		"moduleResolution": "node",
-		"emitDeclarationOnly": false,
-		"isolatedModules": true,
 		"esModuleInterop": true,
 		"typeRoots": ["./node_modules/@types", "./node_modules/@figma"],
 		"module": "commonjs",

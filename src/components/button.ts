@@ -24,7 +24,7 @@ export class Button {
   constructor(label: string, icon: String, action: Function) {
     var self = this;
     this.state = 0;
-    this.action = action(self);
+    this.action = action;
     this.label = label;
     ({
       container: this.container,
@@ -36,7 +36,7 @@ export class Button {
 
     if (icon !== null) {
       this.iconData = icon;
-      this.iconNode = figma.createNodeFromSvg(this.iconData);
+      //this.iconNode = figma.createNodeFromSvg(this.iconData);
     }
     this.redraw();
 
@@ -94,15 +94,32 @@ export class Button {
 
     this.button.appendChild(this.labelNode);
 
-    if (this.iconNode) {
-      this.button.appendChild(this.iconNode);
+
+    if(this.iconData && this.iconNode == undefined || this.iconData && this.iconNode.removed == true){
+    
+      this.iconNode = figma.createNodeFromSvg(this.iconData)
       this.iconNode.children.forEach((n: any) => (n.fills = white));
-    } else {
-      this.iconNode = this.iconData
-      ? figma.createNodeFromSvg(this.iconData)
-      : null;
+      this.button.appendChild(this.iconNode)
     }
+
+
+
+    // if (this.iconNode.removed = false) {
+    //   console.log(this.iconNode)
+    //   this.button.appendChild(this.iconNode);
+    //   console.log('appended iconNode')
+    //   this.iconNode.children.forEach((n: any) => (n.fills = white));
+    // } else {
+    //   this.iconNode = this.iconData
+    //   ? figma.createNodeFromSvg(this.iconData)
+    //   : null;
+    // }
+
+
+
+
     this.container.appendChild(this.button);
+  
     this.container.fills = [];
     this.container.resize(
       this.button.width > 0.01 ? this.button.width : 32,
@@ -137,6 +154,7 @@ export class Button {
     let y = this.container.y;
     let parent = this.container.parent;
     let index = parent?.children?.indexOf(this.container);
+    console.log(parent,index)
     this.remove();
     this.render();
     index !== undefined && index > -1
@@ -144,6 +162,12 @@ export class Button {
       : parent?.appendChild(this.container);
     this.container.x = x;
     this.container.y = y;
+  }
+
+  async setLabel(str: string){
+    await(figma.loadFontAsync(this.labelNode.fontName as FontName))
+    this.labelNode.characters = str
+    this.label = str
   }
 
   icon(svg: String) {
